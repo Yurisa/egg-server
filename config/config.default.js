@@ -29,6 +29,15 @@ module.exports = appInfo => {
       app: true,
       // 是否加载到 agent 上，默认关闭
       agent: false,
+    },
+    security: {
+      csrf: {
+        enable: false,
+      },
+    },
+    multipart: {
+      // will append to whilelist
+      whitelist: (filename) => true
     }
   };
 
