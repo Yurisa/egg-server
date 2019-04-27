@@ -1,8 +1,8 @@
 const Service = require('egg').Service;
 const path = require('path');
+const sendToWormhole = require('stream-wormhole');
 const fs = require('fs');
 const uploadPath = path.join(__dirname, '../', '/public/uploads');
-const md5Path = './file-md5';
 let fileIndex = 1;
 
 function streamToBuffer(stream) {  
@@ -28,29 +28,38 @@ class UploadService extends Service {
       fs.mkdirSync(uploadPath)
     }
 
-    // 保存文件MD5的目录是否存在，不存在则创建
-    if (!fs.existsSync(md5Path)) {
-      fs.mkdirSync(md5Path)
-    }
-
     if (fileIndex == 1) {
-      if (fs.existsSync(md5Path + '/md5.txt')) {
-        let fileContent = fs.readFileSync(md5Path + '/md5.txt', 'utf-8');
-        if(fileContent.indexOf(`[${data.fileMD5}]`) != -1) {
-          ctx.body = JSON.stringify({exist: 1, success: true, filePath: `/public/${data.fileName}`}).toString('utf8');
-          return;
+      const result = await this.app.mysql.select('upload_file', {
+        columns: ['file_md5']
+      });
+      if (result && result.length > 0) {
+        for (const r in result) {
+          if(result[r].file_md5 === data.fileMD5) {
+            await sendToWormhole(fileData); //将流消耗掉否则会造成浏览器卡死
+            ctx.body = JSON.stringify({exist: 1, success: true, filePath: `/public/uploads/${data.fileName}`}).toString('utf8');
+            return;
+          }
         }
-      } else {
-        fs.writeFileSync(md5Path + '/md5.txt', '');
       }
     }
   
     if (fileIndex == data.fileChunks) { // 最后一块文件blob
       fileIndex = 1;
       fs.appendFileSync(`${uploadPath}/${data.fileName}`, await streamToBuffer(fileData));
-      fs.appendFileSync(md5Path + '/md5.txt', `[${data.fileMD5}]`);
-      console.log(data.fileName)
-      ctx.body = JSON.stringify({exist: 0, success: true, filePath: `/public/${data.fileName}`}).toString('utf8');
+      /**
+       * 向表upload_file插入一条数据
+       */
+      const result = await this.app.mysql.insert('upload_file', {
+        file_path: `/public/uploads/${data.fileName}`, 
+        file_size: data.fileSize, 
+        file_suffix: data.fileName.replace(/.+\./,""), 
+        file_name: data.fileName,
+        file_md5: data.fileMD5,
+        create_time: new Date(),
+        update_time: new Date(),
+        file_status: 'success'
+      })
+      ctx.body = JSON.stringify({exist: 0, success: true, filePath: `/public/uploads/${data.fileName}`}).toString('utf8');
     } else if (fileIndex == data.fileIndex) {
       fileIndex++
       fs.appendFileSync(`${uploadPath}/${data.fileName}`, await streamToBuffer(fileData))
