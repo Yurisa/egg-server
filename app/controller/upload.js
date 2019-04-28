@@ -5,6 +5,12 @@ class UploadController extends Controller {
     const { ctx } = this;
     await ctx.service.upload.index();
   }
+
+  async findAllUploadFiles() {
+    const { ctx } = this;
+    const data = await ctx.service.upload.findAll();
+    ctx.body = data;
+  }
 }
 
 module.exports = UploadController;
