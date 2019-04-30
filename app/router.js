@@ -8,4 +8,5 @@ module.exports = app => {
   router.get('/', controller.home.index);
   router.get('/upload-files', controller.upload.findAllUploadFiles);
   router.post('/upload', controller.upload.index);
+  router.get('/fileContent', controller.home.getFileContent);
 };
