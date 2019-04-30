@@ -34,6 +34,11 @@ module.exports = appInfo => {
       csrf: {
         enable: false,
       },
+      domainWhiteList: ['*'] 
+    },
+    cors: {
+      origin:'*',
+      allowMethods: 'GET,HEAD,PUT,POST,DELETE,PATCH'
     },
     multipart: {
       // will append to whilelist
