@@ -43,8 +43,16 @@ module.exports = appInfo => {
     multipart: {
       // will append to whilelist
       whitelist: (filename) => true,
-      fileSize: '100mb',
-      fieldSize: '100mb'
+      fileSize: '1000mb',
+      fieldSize: '1000mb'
+    },
+    redis: {
+      client: { 
+        port: 6379, // Redis port 
+        host: '127.0.0.1', // Redis host 
+        password: 'auth', 
+        db: 0, 
+      },
     }
   };
 

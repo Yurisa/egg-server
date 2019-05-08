@@ -9,9 +9,8 @@ class HomeController extends Controller {
   }
 
   async test() {
-    const { ctx } = this;
-    const data = await ctx.service.home.findAll();
-    ctx.body = data;
+    const { ctx, app } = this;
+    app.redis.set('hdd', '123') // 把token存入redis
   }
 
   async getFileContent() {
