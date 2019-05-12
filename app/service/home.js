@@ -24,6 +24,34 @@ class HomeService extends Service {
       throw new Error(e);
     }
   }
+
+  async queryFilesByType() {
+    const { ctx } = this;
+    const { type } = ctx.params;
+    let data = [];
+    if (type === 'all') {
+      data = await this.app.mysql.select('upload_file');
+    } else if (type === 'document') {
+      data = await this.app.mysql.select('upload_file', {
+        where: {
+          file_suffix: ['pdf', 'txt', 'js']
+        }
+      });
+    } else if (type === 'music') {
+      data = await this.app.mysql.select('upload_file', {
+        where: {
+          file_suffix: ['mp3']
+        }
+      });
+    } else if (type === 'video') {
+      data = await this.app.mysql.select('upload_file', {
+        where: {
+          file_suffix: ['mp4']
+        }
+      });   
+    }
+    return data;
+  }
 }
 
 module.exports = HomeService;
