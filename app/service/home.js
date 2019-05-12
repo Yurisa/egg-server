@@ -52,6 +52,16 @@ class HomeService extends Service {
     }
     return data;
   }
+
+
+  async deleteFileById() {
+    const { ctx, app } = this;
+    const { id } = ctx.params;
+    const result = app.mysql.delete('upload_file', {
+      file_id: id
+    });
+    return result;
+  }
 }
 
 module.exports = HomeService;

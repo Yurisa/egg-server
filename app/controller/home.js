@@ -37,6 +37,15 @@ class HomeController extends Controller {
       body: data
     }
   }
+
+  async removeFileById() {
+    const { ctx } = this;
+    const result = await ctx.service.home.deleteFileById();
+    ctx.body = {
+      code: 1,
+      body: result
+    }
+  }
 }
 
 module.exports = HomeController;

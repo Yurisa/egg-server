@@ -10,5 +10,6 @@ module.exports = app => {
   router.post('/upload', controller.upload.index);
   router.get('/fileContent', controller.home.getFileContent);
   router.get('/test', controller.home.test);
-  router.get('/files/:type', controller.home.getFilesByType);
+  router.get('/file/:type', controller.home.getFilesByType);
+  router.delete('/file/:id', controller.home.removeFileById);
 };
