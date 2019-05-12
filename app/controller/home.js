@@ -28,6 +28,24 @@ class HomeController extends Controller {
       }
     }
   }
+
+  async getFilesByType() {
+    const { ctx } = this;
+    const data = await ctx.service.home.queryFilesByType();
+    ctx.body = {
+      code: 1,
+      body: data
+    }
+  }
+
+  async removeFileById() {
+    const { ctx } = this;
+    const result = await ctx.service.home.deleteFileById();
+    ctx.body = {
+      code: 1,
+      body: result
+    }
+  }
 }
 
 module.exports = HomeController;
