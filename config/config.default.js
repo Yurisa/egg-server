@@ -43,9 +43,15 @@ module.exports = appInfo => {
     multipart: {
       // will append to whilelist
       whitelist: (filename) => true,
-      fileSize: '1000mb',
-      fieldSize: '1000mb'
+      mode: 'file',
+      fileSize: '10gb',
+      fieldSize: '10gb'
     },
+    bodyParser: {
+      jsonLimit: '10mb',
+      formLimit: '10mb',
+    },
+    
     redis: {
       client: { 
         port: 6379, // Redis port 

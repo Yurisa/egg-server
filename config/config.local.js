@@ -34,6 +34,16 @@ module.exports = appInfo => {
       csrf: {
         enable: false,
       },
+    },
+    multipart: {
+      // will append to whilelist
+      whitelist: (filename) => true,
+      fileSize: '10gb',
+      fieldSize: '10gb'
+    },
+    bodyParser: {
+      jsonLimit: '10mb',
+      formLimit: '10mb',
     }
   };
 
