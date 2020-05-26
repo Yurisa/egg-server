@@ -34,32 +34,32 @@ module.exports = appInfo => {
       csrf: {
         enable: false,
       },
-      domainWhiteList: ['*'] 
+      domainWhiteList: [ '*' ],
     },
     cors: {
-      origin:'*',
-      allowMethods: 'GET,HEAD,PUT,POST,DELETE,PATCH'
+      origin: '*',
+      allowMethods: 'GET,HEAD,PUT,POST,DELETE,PATCH',
     },
     multipart: {
       // will append to whilelist
-      whitelist: (filename) => true,
+      whitelist: () => true,
       mode: 'file',
       fileSize: '10gb',
-      fieldSize: '10gb'
+      fieldSize: '10gb',
     },
     bodyParser: {
       jsonLimit: '10mb',
       formLimit: '10mb',
     },
-    
+
     redis: {
-      client: { 
-        port: 6379, // Redis port 
-        host: '127.0.0.1', // Redis host 
-        password: 'auth', 
-        db: 0, 
+      client: {
+        port: 6379, // Redis port
+        host: '127.0.0.1', // Redis host
+        password: 'auth',
+        db: 0,
       },
-    }
+    },
   };
 
   // use for cookie sign key, should change to your own and keep security

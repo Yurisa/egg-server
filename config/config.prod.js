@@ -23,13 +23,13 @@ module.exports = appInfo => {
         // 密码
         password: '12345678',
         // 数据库名
-        database: 'uploadFile',
+        database: 'pomelo',
       },
       // 是否加载到 app 上，默认开启
       app: true,
       // 是否加载到 agent 上，默认关闭
       agent: false,
-    }
+    },
   };
 
   // use for cookie sign key, should change to your own and keep security
